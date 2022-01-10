@@ -31,4 +31,10 @@ public interface MessageMapper {
     //status = 0 未读
     //status = 2 系统
     int selectLetterUnreadCount(int userId, String conversationId);
+
+    //新增消息
+    int insertMessage(Message message);
+
+    //修改消息状态： 已读 删除
+    int updateStatus(List<Integer> ids, int status);
 }

@@ -167,5 +167,8 @@ public class UserService {
         return userMapper.updateHeader(userId, headerUrl);
     }
 
+    public User findUserByName(String name){
+        return userMapper.selectByName(name);
+    }
 
 }
