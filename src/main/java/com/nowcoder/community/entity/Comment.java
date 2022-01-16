@@ -6,8 +6,10 @@ public class Comment {
 
     private int id;
     private int userId;
-    private int entityType; //评论 回复
-    private int entityId;  // post id 帖子的id
+    //评论 回复  实体类型 1为帖子
+    private int entityType;
+    // post id   对应的帖子的id(discuss_post 的主键)
+    private int entityId;
     private int targetId;
     private String content;
     private int status;
