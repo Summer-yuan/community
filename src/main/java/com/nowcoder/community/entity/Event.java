@@ -2,7 +2,7 @@ package com.nowcoder.community.entity;
 
 import java.util.HashMap;
 import java.util.Map;
-
+//kafka
 public class Event {
 
     private String topic;
