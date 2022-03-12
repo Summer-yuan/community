@@ -11,6 +11,7 @@ import com.nowcoder.community.util.CommunityUtil;
 import com.nowcoder.community.util.HostHolder;
 import com.nowcoder.community.util.RedisKeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,21 +21,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.*;
 
-/**
- * @author syl17
- */
 @Controller
 @RequestMapping("/discuss")
-public class DiscussPostController  implements CommunityConstant {
+public class DiscussPostController implements CommunityConstant {
 
     @Autowired
     private DiscussPostService discussPostService;
 
     @Autowired
-    private UserService userService;
+    private HostHolder hostHolder;
 
     @Autowired
-    private HostHolder hostHolder;
+    private UserService userService;
 
     @Autowired
     private CommentService commentService;
@@ -44,6 +42,10 @@ public class DiscussPostController  implements CommunityConstant {
 
     @Autowired
     private EventProducer eventProducer;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+    //add 加精算分
 
     @RequestMapping(path = "/add", method = RequestMethod.POST)
     @ResponseBody
@@ -68,19 +70,22 @@ public class DiscussPostController  implements CommunityConstant {
                 .setEntityId(post.getId());
         eventProducer.fireEvent(event);
 
+        // 计算帖子分数
+        String redisKey = RedisKeyUtil.getPostScoreKey();
+        redisTemplate.opsForSet().add(redisKey, post.getId());
+
         // 报错的情况,将来统一处理.
         return CommunityUtil.getJSONString(0, "发布成功!");
     }
 
     @RequestMapping(path = "/detail/{discussPostId}", method = RequestMethod.GET)
-    public String getDiscussPost(@PathVariable("discussPostId") int discussPostId, Model model, Page page){
-        //帖子
+    public String getDiscussPost(@PathVariable("discussPostId") int discussPostId, Model model, Page page) {
+        // 帖子
         DiscussPost post = discussPostService.findDiscussPostById(discussPostId);
-        model.addAttribute("post",post);
-        //作者
+        model.addAttribute("post", post);
+        // 作者
         User user = userService.findUserById(post.getUserId());
-        model.addAttribute("user",user);
-
+        model.addAttribute("user", user);
         // 点赞数量
         long likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_POST, discussPostId);
         model.addAttribute("likeCount", likeCount);
@@ -89,7 +94,7 @@ public class DiscussPostController  implements CommunityConstant {
                 likeService.findEntityLikeStatus(hostHolder.getUser().getId(), ENTITY_TYPE_POST, discussPostId);
         model.addAttribute("likeStatus", likeStatus);
 
-        //评论分页信息
+        // 评论分页信息
         page.setLimit(5);
         page.setPath("/discuss/detail/" + discussPostId);
         page.setRows(post.getCommentCount());
@@ -106,11 +111,9 @@ public class DiscussPostController  implements CommunityConstant {
                 // 评论VO
                 Map<String, Object> commentVo = new HashMap<>();
                 // 评论
-                //comment 表
                 commentVo.put("comment", comment);
                 // 作者
                 commentVo.put("user", userService.findUserById(comment.getUserId()));
-
                 // 点赞数量
                 likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_COMMENT, comment.getId());
                 commentVo.put("likeCount", likeCount);
@@ -121,7 +124,6 @@ public class DiscussPostController  implements CommunityConstant {
 
                 // 回复列表
                 List<Comment> replyList = commentService.findCommentsByEntity(
-                        //回复这里不需要分页
                         ENTITY_TYPE_COMMENT, comment.getId(), 0, Integer.MAX_VALUE);
                 // 回复VO列表
                 List<Map<String, Object>> replyVoList = new ArrayList<>();
@@ -135,7 +137,6 @@ public class DiscussPostController  implements CommunityConstant {
                         // 回复目标
                         User target = reply.getTargetId() == 0 ? null : userService.findUserById(reply.getTargetId());
                         replyVo.put("target", target);
-
                         // 点赞数量
                         likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_COMMENT, reply.getId());
                         replyVo.put("likeCount", likeCount);
@@ -156,12 +157,13 @@ public class DiscussPostController  implements CommunityConstant {
                 commentVoList.add(commentVo);
             }
         }
-        model.addAttribute("comments", commentVoList);
-        return "/site/discuss-detail";
 
+        model.addAttribute("comments", commentVoList);
+
+        return "/site/discuss-detail";
     }
 
-    // 置顶  ---1 type
+    // 置顶
     @RequestMapping(path = "/top", method = RequestMethod.POST)
     @ResponseBody
     public String setTop(int id) {
@@ -178,7 +180,7 @@ public class DiscussPostController  implements CommunityConstant {
         return CommunityUtil.getJSONString(0);
     }
 
-    // 加精  ---1 status
+    // 加精
     @RequestMapping(path = "/wonderful", method = RequestMethod.POST)
     @ResponseBody
     public String setWonderful(int id) {
@@ -193,8 +195,8 @@ public class DiscussPostController  implements CommunityConstant {
         eventProducer.fireEvent(event);
 
         // 计算帖子分数
-        //String redisKey = RedisKeyUtil.getPostScoreKey();
-        //redisTemplate.opsForSet().add(redisKey, id);
+        String redisKey = RedisKeyUtil.getPostScoreKey();
+        redisTemplate.opsForSet().add(redisKey, id);
 
         return CommunityUtil.getJSONString(0);
     }
@@ -215,8 +217,5 @@ public class DiscussPostController  implements CommunityConstant {
 
         return CommunityUtil.getJSONString(0);
     }
-
-
-
 
 }
