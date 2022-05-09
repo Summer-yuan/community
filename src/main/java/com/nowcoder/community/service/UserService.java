@@ -72,7 +72,6 @@ public class UserService implements CommunityConstant {
             map.put("emailMsg", "邮箱不能为空!");
             return map;
         }
-
         // 验证账号
         User u = userMapper.selectByName(user.getUsername());
         if (u != null) {

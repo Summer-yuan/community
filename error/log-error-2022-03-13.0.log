@@ -1,0 +1,39 @@
+2022-03-13 10:02:18,001 ERROR [restartedMain] o.s.d.e.r.s.AbstractElasticsearchRepository [AbstractElasticsearchRepository.java:91] failed to load elasticsearch nodes : org.elasticsearch.client.transport.NoNodeAvailableException: None of the configured nodes are available: [{#transport#-1}{nhsrcYN3SFmnXhS23DBHNQ}{127.0.0.1}{127.0.0.1:9300}]
+2022-03-13 10:02:19,433 ERROR [restartedMain] o.s.b.d.LoggingFailureAnalysisReporter [LoggingFailureAnalysisReporter.java:42] 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field taskScheduler in com.nowcoder.community.event.EventConsumer required a bean of type 'org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+The following candidates were found but could not be injected:
+	- Bean method 'taskScheduler' in 'TaskSchedulingAutoConfiguration' not loaded because @ConditionalOnBean (names: org.springframework.context.annotation.internalScheduledAnnotationProcessor; SearchStrategy: all) did not find any beans named org.springframework.context.annotation.internalScheduledAnnotationProcessor
+
+
+Action:
+
+Consider revisiting the entries above or defining a bean of type 'org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler' in your configuration.
+
+2022-03-13 10:09:34,384 ERROR [restartedMain] o.s.d.e.r.s.AbstractElasticsearchRepository [AbstractElasticsearchRepository.java:91] failed to load elasticsearch nodes : org.elasticsearch.client.transport.NoNodeAvailableException: None of the configured nodes are available: [{#transport#-1}{KjUNc7rVRl-hfCpQfMcwRQ}{127.0.0.1}{127.0.0.1:9300}]
+2022-03-13 10:17:45,835 ERROR [restartedMain] o.s.d.e.r.s.AbstractElasticsearchRepository [AbstractElasticsearchRepository.java:91] failed to load elasticsearch nodes : org.elasticsearch.client.transport.NoNodeAvailableException: None of the configured nodes are available: [{#transport#-1}{yAqxVEQ5Qz2KCwIHLt1PRQ}{127.0.0.1}{127.0.0.1:9300}]
+2022-03-13 10:19:26,662 ERROR [restartedMain] o.s.d.e.r.s.AbstractElasticsearchRepository [AbstractElasticsearchRepository.java:91] failed to load elasticsearch nodes : org.elasticsearch.client.transport.NoNodeAvailableException: None of the configured nodes are available: [{#transport#-1}{j0Vh3wY8QDaVF0jcLUgHGg}{127.0.0.1}{127.0.0.1:9300}]
+2022-03-13 10:20:34,911 ERROR [restartedMain] o.s.d.e.r.s.AbstractElasticsearchRepository [AbstractElasticsearchRepository.java:91] failed to load elasticsearch nodes : org.elasticsearch.client.transport.NoNodeAvailableException: None of the configured nodes are available: [{#transport#-1}{JfWUQ0EORum6tF87ZWVrIw}{127.0.0.1}{127.0.0.1:9300}]
+2022-03-13 10:22:14,401 ERROR [restartedMain] o.s.d.e.r.s.AbstractElasticsearchRepository [AbstractElasticsearchRepository.java:91] failed to load elasticsearch nodes : org.elasticsearch.client.transport.NoNodeAvailableException: None of the configured nodes are available: [{#transport#-1}{UZghuobAStOvdy6ZwDjQ6A}{127.0.0.1}{127.0.0.1:9300}]
+2022-03-13 10:25:01,611 ERROR [restartedMain] o.s.d.e.r.s.AbstractElasticsearchRepository [AbstractElasticsearchRepository.java:91] failed to load elasticsearch nodes : org.elasticsearch.client.transport.NoNodeAvailableException: None of the configured nodes are available: [{#transport#-1}{LieNnN2FTLCDYScY03W4Vg}{127.0.0.1}{127.0.0.1:9300}]
+2022-03-13 10:27:13,878 ERROR [restartedMain] o.s.d.e.r.s.AbstractElasticsearchRepository [AbstractElasticsearchRepository.java:91] failed to load elasticsearch nodes : org.elasticsearch.client.transport.NoNodeAvailableException: None of the configured nodes are available: [{#transport#-1}{78GRjr1DSkOyr4edn4pJNw}{127.0.0.1}{127.0.0.1:9300}]
+2022-03-13 10:28:18,836 ERROR [restartedMain] o.s.d.e.r.s.AbstractElasticsearchRepository [AbstractElasticsearchRepository.java:91] failed to load elasticsearch nodes : org.elasticsearch.client.transport.NoNodeAvailableException: None of the configured nodes are available: [{#transport#-1}{oC8YdZDMSo2O9YDgumg3AA}{127.0.0.1}{127.0.0.1:9300}]
+2022-03-13 10:32:00,931 ERROR [restartedMain] o.s.d.e.r.s.AbstractElasticsearchRepository [AbstractElasticsearchRepository.java:91] failed to load elasticsearch nodes : org.elasticsearch.client.transport.NoNodeAvailableException: None of the configured nodes are available: [{#transport#-1}{eC0eSLXaSoOgN5RStlF6sg}{127.0.0.1}{127.0.0.1:9300}]
+2022-03-13 10:33:55,404 ERROR [restartedMain] o.s.d.e.r.s.AbstractElasticsearchRepository [AbstractElasticsearchRepository.java:91] failed to load elasticsearch nodes : org.elasticsearch.client.transport.NoNodeAvailableException: None of the configured nodes are available: [{#transport#-1}{NvTe00fERJaeSxFWxzQHeA}{127.0.0.1}{127.0.0.1:9300}]
+2022-03-13 15:43:57,158 ERROR [restartedMain] o.s.d.e.r.s.AbstractElasticsearchRepository [AbstractElasticsearchRepository.java:91] failed to load elasticsearch nodes : org.elasticsearch.client.transport.NoNodeAvailableException: None of the configured nodes are available: [{#transport#-1}{uZZOPqLUSNSIz01-TXpzrg}{127.0.0.1}{127.0.0.1:9300}]
+2022-03-13 15:46:03,167 ERROR [restartedMain] o.s.d.e.r.s.AbstractElasticsearchRepository [AbstractElasticsearchRepository.java:91] failed to load elasticsearch nodes : org.elasticsearch.client.transport.NoNodeAvailableException: None of the configured nodes are available: [{#transport#-1}{lYlCXg6rTciLnMNNKUdrMg}{127.0.0.1}{127.0.0.1:9300}]
+2022-03-13 15:52:31,022 ERROR [restartedMain] o.s.d.e.r.s.AbstractElasticsearchRepository [AbstractElasticsearchRepository.java:91] failed to load elasticsearch nodes : org.elasticsearch.client.transport.NoNodeAvailableException: None of the configured nodes are available: [{#transport#-1}{nuoYPChbRMyaYYXt3k3gdQ}{127.0.0.1}{127.0.0.1:9300}]
+2022-03-13 15:54:59,812 ERROR [restartedMain] o.s.d.e.r.s.AbstractElasticsearchRepository [AbstractElasticsearchRepository.java:91] failed to load elasticsearch nodes : org.elasticsearch.client.transport.NoNodeAvailableException: None of the configured nodes are available: [{#transport#-1}{kNxNrOssTCO_imd0wXBxDQ}{127.0.0.1}{127.0.0.1:9300}]
+2022-03-13 15:56:27,440 ERROR [restartedMain] o.s.d.e.r.s.AbstractElasticsearchRepository [AbstractElasticsearchRepository.java:91] failed to load elasticsearch nodes : org.elasticsearch.client.transport.NoNodeAvailableException: None of the configured nodes are available: [{#transport#-1}{F2jNzqRQR8KZleCMlRpEnw}{127.0.0.1}{127.0.0.1:9300}]
+2022-03-13 16:03:29,123 ERROR [restartedMain] o.s.d.e.r.s.AbstractElasticsearchRepository [AbstractElasticsearchRepository.java:91] failed to load elasticsearch nodes : org.elasticsearch.client.transport.NoNodeAvailableException: None of the configured nodes are available: [{#transport#-1}{HdVjHYjwSGiaNtzCi_uzmQ}{127.0.0.1}{127.0.0.1:9300}]
+2022-03-13 16:06:49,204 ERROR [scheduling-3] c.n.c.e.EventConsumer [EventConsumer.java:204] 上传次数过多,终止任务:70e9fd099182446d969ba966ccedd2eb

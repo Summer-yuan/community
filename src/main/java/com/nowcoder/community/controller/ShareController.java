@@ -59,8 +59,8 @@ public class ShareController implements CommunityConstant {
 
         // 返回访问路径
         Map<String, Object> map = new HashMap<>();
-         map.put("shareUrl", domain + contextPath + "/share/image/" + fileName);
-//        map.put("shareUrl", shareBucketUrl + "/" + fileName);
+ //        map.put("shareUrl", domain + contextPath + "/share/image/" + fileName);
+        map.put("shareUrl", shareBucketUrl + "/" + fileName);
 
         return CommunityUtil.getJSONString(0, null, map);
     }
