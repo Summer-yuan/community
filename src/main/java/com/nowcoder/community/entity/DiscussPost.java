@@ -38,6 +38,17 @@ public class DiscussPost {
     @Field(type = FieldType.Double)
     private double score;
 
+    @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_smart")
+    private String address;
+
+    public String getaddress() {
+        return address;
+    }
+
+    public void setaddress(String address) {
+        this.address = address;
+    }
+
     public int getId() {
         return id;
     }

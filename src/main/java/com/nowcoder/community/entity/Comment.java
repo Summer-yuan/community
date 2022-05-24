@@ -14,6 +14,15 @@ public class Comment {
     private String content;
     private int status;
     private Date createTime;
+    private String address;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public int getId() {
         return id;

@@ -12,8 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,6 +45,8 @@ public class HomeController implements CommunityConstant {
             for (DiscussPost post : list) {
                 Map<String,Object> map = new HashMap<>();
                 map.put("post",post);
+                String address = post.getaddress();
+                map.put("address",address);
                 User user = userService.findUserById(post.getUserId());
                 map.put("user",user);
                 long likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_POST, post.getId());

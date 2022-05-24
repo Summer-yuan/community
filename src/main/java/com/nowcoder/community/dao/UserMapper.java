@@ -20,4 +20,7 @@ public interface UserMapper {
 
     int updatePassword(int id, String password);
 
+    int insertIp(int user_id, String s, String ip);
+
+    String getAddressById(int user_id);
 }

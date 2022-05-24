@@ -2,8 +2,10 @@ package com.nowcoder.community.controller;
 
 import com.google.code.kaptcha.Producer;
 import com.nowcoder.community.entity.User;
+import com.nowcoder.community.service.IpService;
 import com.nowcoder.community.service.UserService;
 import com.nowcoder.community.util.CommunityUtil;
+import com.nowcoder.community.util.IpUtils;
 import com.nowcoder.community.util.RedisKeyUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -20,11 +22,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -43,6 +47,9 @@ public class LoginController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private IpService ipService;
 
     @Autowired
     private Producer kaptchaProducer;
@@ -122,7 +129,8 @@ public class LoginController {
     @RequestMapping(path = "/login", method = RequestMethod.POST)
     public String login(String username, String password, String code, boolean rememberme,
                         Model model, HttpSession session, HttpServletResponse response,
-                        @CookieValue("kaptchaOwner") String kaptchaOwner) {
+                        HttpServletRequest request,
+                        @CookieValue("kaptchaOwner") String kaptchaOwner) throws Exception {
         // 检查验证码
         //String kaptcha = (String) session.getAttribute("kaptcha");
         String kaptcha = null;
@@ -144,6 +152,28 @@ public class LoginController {
             cookie.setPath(contextPath);
             cookie.setMaxAge(expiredSeconds);
             response.addCookie(cookie);
+            User user = userService.findUserByName(username);
+            int id = user.getId();
+
+            String ip = IpUtils.getIpAddr(request);
+            if(ip.contains("192.168")){
+                ipService.saveIp(id,ip,"102实验室");
+            }else if(ip.contains("0:0:0:0")){
+                ipService.saveIp(id,ip,"我的电脑");
+            }else{
+                HashMap<String, String> ipMap = IpUtils.getCityByIP(ip);
+                String address = "null";
+
+                if(ipMap.get("国家") != null){
+                    if(ipMap.get("省份") == null){
+                        address = ipMap.get("国家");
+                    }else if(ipMap.get("省份") != null){
+                        address = ipMap.get("国家") +":" + ipMap.get("省份");
+                    }
+                }
+                ipService.saveIp(id,ip,address);
+            }
+
             return "redirect:/index";
         } else {
             model.addAttribute("usernameMsg", map.get("usernameMsg"));

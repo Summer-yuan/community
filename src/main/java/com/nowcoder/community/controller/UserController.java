@@ -1,10 +1,10 @@
 package com.nowcoder.community.controller;
 
 import com.nowcoder.community.annotation.LoginRequired;
+import com.nowcoder.community.entity.DiscussPost;
+import com.nowcoder.community.entity.Page;
 import com.nowcoder.community.entity.User;
-import com.nowcoder.community.service.FollowService;
-import com.nowcoder.community.service.LikeService;
-import com.nowcoder.community.service.UserService;
+import com.nowcoder.community.service.*;
 import com.nowcoder.community.util.CommunityConstant;
 import com.nowcoder.community.util.CommunityUtil;
 import com.nowcoder.community.util.HostHolder;
@@ -28,6 +28,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/user")
@@ -51,7 +55,13 @@ public class UserController implements CommunityConstant {
     private HostHolder hostHolder;
 
     @Autowired
+    private DiscussPostService discussPostService;
+
+    @Autowired
     private LikeService likeService;
+
+    @Autowired
+    private IpService ipService;
 
     @Autowired
     private FollowService followService;
@@ -163,13 +173,18 @@ public class UserController implements CommunityConstant {
     // 个人主页
     @RequestMapping(path = "/profile/{userId}", method = RequestMethod.GET)
     public String getProfilePage(@PathVariable("userId") int userId, Model model) {
-        User user = userService.findUserById(userId);
+        //User user = userService.findUserById(userId);
+        User user = hostHolder.getUser();
+        int user_id = user.getId();
         if (user == null) {
             throw new RuntimeException("该用户不存在!");
         }
-
         // 用户
         model.addAttribute("user", user);
+        //ip归属地
+        String address = ipService.getAddress(user_id);
+        model.addAttribute("ip_location", address);
+
         // 点赞数量
         int likeCount = likeService.findUserLikeCount(userId);
         model.addAttribute("likeCount", likeCount);
@@ -189,5 +204,38 @@ public class UserController implements CommunityConstant {
 
         return "/site/profile";
     }
+
+    // 个人主页
+    @RequestMapping(path = "/mypost/{userId}", method = RequestMethod.GET)
+    public String getmypost(@PathVariable("userId") int userId,Model model, Page page) {
+        //User user = hostHolder.getUser();
+//        System.out.println(user.getId());
+
+        page.setRows(discussPostService.findDiscussPostRows(userId));
+        page.setPath("/site/my-post");
+        List<DiscussPost> list = discussPostService.findDiscussPosts(userId, page.getOffset(), page.getLimit());
+        int count = discussPostService.findDiscussPostRows(userId);
+        List<Map<String,Object>> discussPosts = new ArrayList<>();
+        if(list != null){
+            for (DiscussPost post : list) {
+                Map<String,Object> map = new HashMap<>();
+                map.put("post",post);
+                String address = post.getaddress();
+                map.put("address",address);
+                User user = userService.findUserById(post.getUserId());
+                map.put("user",user);
+                long likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_POST, post.getId());
+                map.put("likeCount", likeCount);
+                discussPosts.add(map);
+            }
+        }
+        model.addAttribute("discussPosts",discussPosts);
+        model.addAttribute("count",count);
+
+        return "/site/my-post";
+
+        //return "/site/my-post";
+    }
+
 
 }

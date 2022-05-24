@@ -13,8 +13,12 @@ function publish() {
 //    });
 
 	// 获取标题和内容
+
 	var title = $("#recipient-name").val();
 	var content = $("#message-text").val();
+	$("#hintBody").text(title);
+	$("#hintModal").modal("show");
+
 	// 发送异步请求(POST)
 	$.post(
 		CONTEXT_PATH + "/discuss/add",

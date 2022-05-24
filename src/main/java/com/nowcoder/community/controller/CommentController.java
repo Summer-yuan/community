@@ -6,6 +6,7 @@ import com.nowcoder.community.entity.Event;
 import com.nowcoder.community.event.EventProducer;
 import com.nowcoder.community.service.CommentService;
 import com.nowcoder.community.service.DiscussPostService;
+import com.nowcoder.community.service.IpService;
 import com.nowcoder.community.util.CommunityConstant;
 import com.nowcoder.community.util.HostHolder;
 import com.nowcoder.community.util.RedisKeyUtil;
@@ -35,13 +36,21 @@ public class CommentController implements CommunityConstant {
     private EventProducer eventProducer;
 
     @Autowired
+    private IpService ipService;
+
+    @Autowired
     private RedisTemplate redisTemplate;
 
     @RequestMapping(path = "/add/{discussPostId}", method = RequestMethod.POST)
     public String addComment(@PathVariable("discussPostId") int discussPostId, Comment comment) {
-        comment.setUserId(hostHolder.getUser().getId());
+        int user_id = hostHolder.getUser().getId();
+        comment.setUserId(user_id);
         comment.setStatus(0);
         comment.setCreateTime(new Date());
+
+        String address = ipService.getAddress(user_id);
+        comment.setAddress(address);
+
         commentService.addComment(comment);
 
         // 触发评论事件

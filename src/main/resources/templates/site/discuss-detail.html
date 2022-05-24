@@ -85,7 +85,13 @@
 				<div class="media-body">
 					<div class="mt-0 text-warning" th:utext="${user.username}">寒江雪</div>
 					<div class="text-muted mt-3">
-						发布于 <b th:text="${#dates.format(post.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-04-15 15:32:18</b>
+						<!--发布于 <b th:text="${#dates.format(post.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-04-15 15:32:18</b>
+						ip    <b th:text="${post_address}">xian</b>-->
+						<div class="text-muted mt-3">
+							<span>发布于 <i class="text-muted" th:text="${#dates.format(post.createTime,'yyyy-MM-dd HH:mm:ss')}">2015-06-12 15:20:12</i></span>
+							<span class="ml-4">ip归属地  <i class="text-muted" th:text="${post_address}">西安</i></span>
+						</div>
+
 						<ul class="d-inline float-right">
 							<li class="d-inline ml-2">
 								<a href="javascript:;" th:onclick="|like(this,1,${post.id},${post.userId},${post.id});|" class="text-primary">
@@ -136,7 +142,13 @@
 							这开课时间是不是有点晚啊。。。
 						</div>
 						<div class="mt-4 text-muted font-size-12">
-							<span>发布于 <b th:text="${#dates.format(cvo.comment.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-04-15 15:32:18</b></span>
+<!--							<span>发布于 <b th:text="${#dates.format(cvo.comment.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-04-15 15:32:18</b></span>-->
+
+							<div class="text-muted mt-3">
+								<span>发布于 <i class="text-muted" th:text="${#dates.format(cvo.comment.createTime,'yyyy-MM-dd HH:mm:ss')}">2015-06-12 15:20:12</i></span>
+								<span class="ml-2">来自  <i class="text-muted" th:text="${cvo.address1}">西安</i></span>
+							</div>
+
 							<ul class="d-inline float-right">
 								<li class="d-inline ml-2">
 									<a href="javascript:;" th:onclick="|like(this,2,${cvo.comment.id},${cvo.comment.userId},${post.id});|" class="text-primary">
@@ -162,7 +174,12 @@
 									<span th:utext="${rvo.reply.content}">这个是直播时间哈，觉得晚的话可以直接看之前的完整录播的~</span>
 								</div>
 								<div class="mt-3">
-									<span th:text="${#dates.format(rvo.reply.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-04-15 15:32:18</span>
+<!--									<span th:text="${#dates.format(rvo.reply.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-04-15 15:32:18</span>-->
+									<div class="text-muted mt-3">
+
+										<span th:text="${#dates.format(rvo.reply.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-04-15 15:32:18</span>
+										<span class="ml-2">来自  <i class="text-muted" th:text="${rvo.address2}">西安</i></span>
+									</div>
 									<ul class="d-inline float-right">
 										<li class="d-inline ml-2">
 											<a href="javascript:;" th:onclick="|like(this,2,${rvo.reply.id},${rvo.reply.userId},${post.id});|" class="text-primary">

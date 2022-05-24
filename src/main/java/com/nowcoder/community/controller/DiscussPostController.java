@@ -2,10 +2,7 @@ package com.nowcoder.community.controller;
 
 import com.nowcoder.community.entity.*;
 import com.nowcoder.community.event.EventProducer;
-import com.nowcoder.community.service.CommentService;
-import com.nowcoder.community.service.DiscussPostService;
-import com.nowcoder.community.service.LikeService;
-import com.nowcoder.community.service.UserService;
+import com.nowcoder.community.service.*;
 import com.nowcoder.community.util.CommunityConstant;
 import com.nowcoder.community.util.CommunityUtil;
 import com.nowcoder.community.util.HostHolder;
@@ -41,6 +38,9 @@ public class DiscussPostController implements CommunityConstant {
     private LikeService likeService;
 
     @Autowired
+    private IpService ipService;
+
+    @Autowired
     private EventProducer eventProducer;
 
     @Autowired
@@ -50,7 +50,15 @@ public class DiscussPostController implements CommunityConstant {
     @RequestMapping(path = "/add", method = RequestMethod.POST)
     @ResponseBody
     public String addDiscussPost(String title, String content) {
+
+        for (int i = 0; i < 100; i++) {
+            System.out.println(title);
+        }
         User user = hostHolder.getUser();
+        int user_id = user.getId();
+        String address = ipService.getAddress(user_id);
+
+
         if (user == null) {
             return CommunityUtil.getJSONString(403, "你还没有登录哦!");
         }
@@ -60,6 +68,11 @@ public class DiscussPostController implements CommunityConstant {
         post.setTitle(title);
         post.setContent(content);
         post.setCreateTime(new Date());
+        if(address != null){
+            post.setaddress(address);
+        }else{
+            post.setaddress("null");
+        }
         discussPostService.addDiscussPost(post);
 
         // 触发发帖事件
@@ -74,6 +87,7 @@ public class DiscussPostController implements CommunityConstant {
         String redisKey = RedisKeyUtil.getPostScoreKey();
         redisTemplate.opsForSet().add(redisKey, post.getId());
 
+
         // 报错的情况,将来统一处理.
         return CommunityUtil.getJSONString(0, "发布成功!");
     }
@@ -83,8 +97,12 @@ public class DiscussPostController implements CommunityConstant {
         // 帖子
         DiscussPost post = discussPostService.findDiscussPostById(discussPostId);
         model.addAttribute("post", post);
+        //帖子归属地
+        String address = post.getaddress();
+        model.addAttribute("post_address", address);
         // 作者
         User user = userService.findUserById(post.getUserId());
+
         model.addAttribute("user", user);
         // 点赞数量
         long likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_POST, discussPostId);
@@ -114,6 +132,11 @@ public class DiscussPostController implements CommunityConstant {
                 commentVo.put("comment", comment);
                 // 作者
                 commentVo.put("user", userService.findUserById(comment.getUserId()));
+
+                //评论属地
+                String address1 =comment.getAddress();
+                commentVo.put("address1", address1);
+
                 // 点赞数量
                 likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_COMMENT, comment.getId());
                 commentVo.put("likeCount", likeCount);
@@ -134,6 +157,11 @@ public class DiscussPostController implements CommunityConstant {
                         replyVo.put("reply", reply);
                         // 作者
                         replyVo.put("user", userService.findUserById(reply.getUserId()));
+
+                        //回复属地
+                        String address2 = reply.getAddress();
+                        replyVo.put("address2", address2);
+
                         // 回复目标
                         User target = reply.getTargetId() == 0 ? null : userService.findUserById(reply.getTargetId());
                         replyVo.put("target", target);

@@ -5,11 +5,11 @@
 <mapper namespace="com.nowcoder.community.dao.CommentMapper">
 
     <sql id="selectFields">
-        id, user_id, entity_type, entity_id, target_id, content, status, create_time
+        id, user_id, entity_type, entity_id, target_id, content, status, create_time, address
     </sql>
 
     <sql id="insertFields">
-        user_id, entity_type, entity_id, target_id, content, status, create_time
+        user_id, entity_type, entity_id, target_id, content, status, create_time, address
     </sql>
 
     <select id="selectCommentsByEntity" resultType="Comment">
@@ -32,7 +32,7 @@
 
     <insert id="insertComment" parameterType="Comment">
         insert into comment(<include refid="insertFields"></include>)
-        values(#{userId},#{entityType},#{entityId},#{targetId},#{content},#{status},#{createTime})
+        values(#{userId},#{entityType},#{entityId},#{targetId},#{content},#{status},#{createTime},#{address})
     </insert>
 
     <select id="selectCommentById" resultType="Comment">

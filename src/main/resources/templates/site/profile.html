@@ -3,10 +3,10 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<link rel="icon" href="https://static.nowcoder.com/images/logo_87_87.png"/>
+	<link rel="icon" href="http://res.ylshi.top/logo.jpg"/>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
 	<link rel="stylesheet" th:href="@{/css/global.css}" />
-	<title>牛客网-个人主页</title>
+	<title>缘聚睿思网-个人主页</title>
 </head>
 <body>
 <div class="nk-container">
@@ -65,14 +65,12 @@
 			<div class="position-relative">
 				<ul class="nav nav-tabs">
 					<li class="nav-item">
-						<a class="nav-link active" href="profile.html">个人信息</a>
+						<a class="nav-link active" th:href="@{|/user/profile/${loginUser.id}|}">个人信息</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="my-post.html">我的帖子</a>
+						<a class="nav-link" th:href="@{|/user/mypost/${loginUser.id}|}">我的帖子</a>
 					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="my-reply.html">我的回复</a>
-					</li>
+
 				</ul>
 			</div>
 			<!-- 个人信息 -->
@@ -87,6 +85,7 @@
 					</h5>
 					<div class="text-muted mt-3">
 						<span>注册于 <i class="text-muted" th:text="${#dates.format(user.createTime,'yyyy-MM-dd HH:mm:ss')}">2015-06-12 15:20:12</i></span>
+						<span class="ml-4">ip归属地  <i class="text-muted" th:text="${ip_location}">西安</i></span>
 					</div>
 					<div class="text-muted mt-3 mb-5">
 						<span>关注了 <a class="text-primary" th:href="@{|/followees/${user.id}|}" th:text="${followeeCount}">5</a> 人</span>
